@@ -5,70 +5,52 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;  // The point the camera will follow (e.g., spawnArea)
-    public Vector3 offset = new Vector3(0, 0f, -10);  // Offset to adjust the camera's position relative to the target
+    public Vector3 offset = new Vector3(0, 1, -10);  // Offset to adjust the camera's position relative to the target
     public float followSpeed = 2f;  // Speed at which the camera follows the target
-    public float scaleSpeed = 0.1f;  // Speed at which the camera scales its view
-    public float maxZoomOut = 30f;  // Maximum FOV or orthographic size
-
-    private Camera cameraComponent;
-    private float initialSize;
+    private bool isReturningToStart = false;  // Flag to indicate if the camera is moving to the start position
+    private Vector3 startPosition;  // The original position of the camera
 
     void Start()
     {
-        cameraComponent = GetComponent<Camera>();
-        if (cameraComponent.orthographic)
-        {
-            initialSize = cameraComponent.orthographicSize;
-        }
-        else
-        {
-            initialSize = cameraComponent.fieldOfView;
-        }
+        startPosition = transform.position;
     }
 
     void Update()
     {
-        if (target != null)
+        if (!isReturningToStart && target != null)
         {
             FollowTarget();
-            Scale();
         }
     }
 
     void FollowTarget()
     {
-        // Calculate the desired position with offset
         Vector3 desiredPosition = target.position + offset;
-
-        // Smoothly move the camera towards the desired position
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
-
-        // Apply the new position to the camera
         transform.position = smoothedPosition;
     }
 
-    void Scale()
+    public IEnumerator MoveCameraToStart(float duration)
     {
-        if (cameraComponent != null)
+        isReturningToStart = true;
+        float elapsedTime = 0;
+
+        Vector3 initialPosition = transform.position;
+
+        while (elapsedTime < duration)
         {
-            // Determine how far the target has moved up
-            float distanceFromStart = target.position.y;
-
-            // Calculate the new size or FOV based on the distance
-            float newSize = initialSize + distanceFromStart * scaleSpeed;
-
-            // Clamp the size to ensure it doesn't zoom out too much
-            newSize = Mathf.Clamp(newSize, initialSize, maxZoomOut);
-
-            // Apply the new size or FOV to the camera
-            if (cameraComponent.orthographic)
-            {
-                cameraComponent.orthographicSize = newSize;
-            }
-            else
-            {
-                cameraComponent.fieldOfView = newSize;
-            }
+            transform.position = Vector3.Lerp(initialPosition, startPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        transform.position = startPosition;
+        isReturningToStart = false;
+        yield return true;
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
     }
 }
