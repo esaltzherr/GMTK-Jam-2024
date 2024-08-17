@@ -7,6 +7,7 @@ public class TowerHeightTracker : MonoBehaviour
 {
     public GameObject line; // The line object that will indicate the tower's overall height
     public int height;
+    public int lastHeight;
     public float offset = 1f; // Distance above the highest block where the line will be placed
     public float smallOffset = 0.1f;
     public TextMeshProUGUI heightText; // Reference to the TextMeshProUGUI component
@@ -14,6 +15,7 @@ public class TowerHeightTracker : MonoBehaviour
     private List<GameObject> towerBlocks = new List<GameObject>(); // List of all blocks in the tower
     public float smoothSpeed = 5f; // Speed of the smooth movement
 
+    public PointsManager pointsManager;
     // Call this method to add a new block to the list (for example, when a block is placed)
     public void AddBlock(GameObject block)
     {
@@ -84,6 +86,10 @@ public class TowerHeightTracker : MonoBehaviour
 
             // Update the height value based on the highest point's position
             height = (int)(highestY * 10);
+            int heightDiff = lastHeight - height;
+            pointsManager.HeightPoints(heightDiff);
+            lastHeight = height;
+
         }
     }
 

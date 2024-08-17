@@ -12,6 +12,7 @@ public class GameEvents : MonoBehaviour
     public Transform playerSpawnPoint; // Reference to the player spawn point
     public CameraFollow cameraFollow; // Reference to the CameraFollow script on the camera
     public CountdownTimer countdownTimer; // Reference to the CountdownTimer script
+    
 
     void Awake()
     {
@@ -57,6 +58,7 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+
     private IEnumerator HandleEndOfTimerSequence()
     {
         // Move the camera down to its starting position
@@ -93,7 +95,7 @@ public class GameEvents : MonoBehaviour
         // if collides with the height side a function here will be called to cancel the climb ountdown
         // count the points
 
-        
+
 
         Debug.Log("End of timer sequence complete");
     }
