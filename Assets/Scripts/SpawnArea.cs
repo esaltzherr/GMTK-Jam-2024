@@ -12,6 +12,9 @@ public class SpawnArea : MonoBehaviour
     public float heightScaleFactor = 0.05f; // How much the scale increases per unit of height
     public float cooldown = 1f; // Cooldown time between block spawns
 
+    public float minOffset = 1f; // Minimum offset distance from the tower's height
+    public float maxOffset = 3f; // Maximum offset distance from the tower's height
+
     private float currCooldown = 0f; // Current cooldown time
     private GameObject currentBlock; // Reference to the currently spawned block
     private bool isBlockReadyToDrop = false; // Whether the block is ready to be dropped
@@ -30,18 +33,48 @@ public class SpawnArea : MonoBehaviour
             moveDirection += Vector3.right;
         }
 
-        // Move the spawn area
+        // Move the spawn area horizontally
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 
-        // If a block has been spawned but not yet dropped, move it with the spawn area
+        // Move the current block horizontally with the spawn area
         if (currentBlock != null)
         {
-            currentBlock.transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
+            currentBlock.transform.position = spawnPoint.transform.position;
         }
+
+        // Handle vertical movement
+        AdjustSpawnPosition();
 
         // Handle block spawning and dropping
         HandleBlockSpawning();
         HandleBlockDropping();
+    }
+
+    void AdjustSpawnPosition()
+    {
+        if (heightTracker != null)
+        {
+            // Get the current height of the tower
+            float currentHeight = heightTracker.height / 10f;
+
+            // Calculate the desired y position for the spawn area
+            float desiredYMin = currentHeight + minOffset;
+            float desiredYMax = currentHeight + maxOffset;
+
+            // Update the spawn area's position to maintain the offset within the desired range
+            Vector3 newPosition = transform.position;
+
+            // Calculate the target Y position based on the minimum and maximum offset range
+            float targetY = Mathf.Clamp(newPosition.y, desiredYMin, desiredYMax);
+
+            // Smoothly move the spawn area to the target position
+            float smoothSpeed = 5f; // Adjust this to control smoothness
+            newPosition.y = Mathf.Lerp(newPosition.y, targetY, Time.deltaTime * smoothSpeed);
+
+            // Apply the new position to the spawn area
+            transform.position = newPosition;
+
+        }
     }
 
     void HandleBlockSpawning()
@@ -79,7 +112,7 @@ public class SpawnArea : MonoBehaviour
                 spawnPoint.transform.position,
                 spawnPoint.transform.rotation
             );
-
+            Debug.Log("fdhsjkfhdkjsl" + spawnPoint.transform.position);
             // Apply the scale to the new block
             currentBlock.transform.localScale *= scaleMultiplier;
 

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1970772036728758290}
   m_Layer: 7
   m_Name: Square (1)
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55708b1e07791d641bf2229fc90e29ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  points: 10
 --- !u!1 &7354353951279598383
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,8 +174,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7354353951279598383}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0032, y: -0.361, z: 0}
-  m_LocalScale: {x: -0.901822, y: 0.122094, z: 1}
+  m_LocalPosition: {x: 0.25, y: -0.361, z: 0}
+  m_LocalScale: {x: -0.450911, y: 0.122094, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2443016379276571669}

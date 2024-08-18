@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FallingBlock : MonoBehaviour
 {
+    public int points = 10;
     private bool hasCollided = false;  // To track if the block has collided for the first time
     private TowerHeightTracker towerHeightTracker;  // Reference to the TowerHeightTracker
 

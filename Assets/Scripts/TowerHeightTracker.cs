@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro; // Add this line to include TextMeshPro
+using TMPro;
 using UnityEngine;
 
 public class TowerHeightTracker : MonoBehaviour
@@ -16,6 +16,16 @@ public class TowerHeightTracker : MonoBehaviour
     public float smoothSpeed = 5f; // Speed of the smooth movement
 
     public PointsManager pointsManager;
+    private float originalFontSize;
+
+    // Reference to the currently running ResetTextSize coroutine
+    private Coroutine resetTextSizeCoroutine;
+
+    void Start()
+    {
+        originalFontSize = heightText.fontSize;
+    }
+
     // Call this method to add a new block to the list (for example, when a block is placed)
     public void AddBlock(GameObject block)
     {
@@ -86,11 +96,47 @@ public class TowerHeightTracker : MonoBehaviour
 
             // Update the height value based on the highest point's position
             height = (int)(highestY * 10);
-            int heightDiff = lastHeight - height;
+            int heightDiff = height - lastHeight;
+
+            // Change the color and size of the text based on the height difference
+            if (heightDiff > 0)
+            {
+                heightText.color = Color.green;
+                heightText.fontSize = originalFontSize * 1.5f; // Increase font size
+                if (resetTextSizeCoroutine != null)
+                {
+                    StopCoroutine(resetTextSizeCoroutine);
+                }
+                resetTextSizeCoroutine = StartCoroutine(ResetTextSize());
+            }
+            else if (heightDiff < 0)
+            {
+                heightText.color = Color.red;
+                heightText.fontSize = originalFontSize * 0.9f; // Decrease font size
+                if (resetTextSizeCoroutine != null)
+                {
+                    StopCoroutine(resetTextSizeCoroutine);
+                }
+                resetTextSizeCoroutine = StartCoroutine(ResetTextSize());
+            }
+
             pointsManager.HeightPoints(heightDiff);
             lastHeight = height;
 
+            // Stop any previously running ResetTextSize coroutine
+
+
+            // Start a new ResetTextSize coroutine
+            
         }
+    }
+
+    // Coroutine to reset the text size after a short delay
+    private IEnumerator ResetTextSize()
+    {
+        yield return new WaitForSeconds(0.5f);
+        heightText.fontSize = originalFontSize; // Reset to the original font size
+        heightText.color = Color.white; // Optionally reset color to white
     }
 
     // This method updates the TextMeshProUGUI component with the current height
@@ -98,7 +144,7 @@ public class TowerHeightTracker : MonoBehaviour
     {
         if (heightText != null)
         {
-            heightText.text = "" + height.ToString() + "m";
+            heightText.text = height.ToString() + "m";
         }
     }
 
@@ -117,8 +163,8 @@ public class TowerHeightTracker : MonoBehaviour
         }
     }
 
-
-    public void ReduceLine(){
+    public void ReduceLine()
+    {
         offset = smallOffset;
     }
 }
