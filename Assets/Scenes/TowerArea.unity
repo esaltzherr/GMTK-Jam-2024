@@ -268,7 +268,6 @@ GameObject:
   m_Component:
   - component: {fileID: 134437955}
   - component: {fileID: 134437954}
-  - component: {fileID: 134437956}
   m_Layer: 0
   m_Name: Spawn Area
   m_TagString: Untagged
@@ -298,6 +297,8 @@ MonoBehaviour:
   maxScaleMultiplier: 5
   heightScaleFactor: 0.05
   cooldown: 1
+  minOffset: 1
+  maxOffset: 3
 --- !u!4 &134437955
 Transform:
   m_ObjectHideFlags: 0
@@ -315,21 +316,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &134437956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134437953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d480d71f12b7a53449d90e8ad0b56bbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heightTracker: {fileID: 887281518}
-  minOffset: 1
-  maxOffset: 3
 --- !u!1 &154671850
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,7 +867,7 @@ GameObject:
   - component: {fileID: 866424171}
   - component: {fileID: 866424170}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: HeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -904,7 +890,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.35, y: 0.25}
+  m_AnchoredPosition: {x: 0.35, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &866424170
@@ -1043,7 +1029,6 @@ MonoBehaviour:
   heightText: {fileID: 866424170}
   smoothSpeed: 5
   pointsManager: {fileID: 705608350}
-  originalFontSize: 0
 --- !u!212 &887281519
 SpriteRenderer:
   m_ObjectHideFlags: 0

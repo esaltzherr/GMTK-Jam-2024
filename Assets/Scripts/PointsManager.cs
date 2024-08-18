@@ -54,7 +54,13 @@ public class PointsManager : MonoBehaviour
         else if (points < 0)
         {
             Debug.Log("Subtracting " + points);
-            SubtractPoints(-points);
+            // dont add the animation to the subtracing with this
+            currentPoints -= -points;
+            if (currentPoints < 0)
+            {
+                currentPoints = 0; // Prevent negative points
+            }
+            UpdatePointsText();
         }
     }
 
@@ -95,9 +101,9 @@ public class PointsManager : MonoBehaviour
         // Option 2: Start with a small backup and then accelerate towards the target (ease-in with overshoot)
         // Uncomment the following curve if you want a small backup before flying towards the end location
         AnimationCurve curve = new AnimationCurve(
-            new Keyframe(0, 0),          // Start at 0
-            new Keyframe(0.3f, -0.3f),   // Back up slightly (optional)
-            new Keyframe(1, 1)           // End at 1 (target position)
+            new Keyframe(0, 0), // Start at 0
+            new Keyframe(0.3f, -0.3f), // Back up slightly (optional)
+            new Keyframe(1, 1) // End at 1 (target position)
         );
 
         while (elapsed < duration)

@@ -21,8 +21,16 @@ public class DestroyBox : MonoBehaviour
                 pointsManager.SubtractPoints(fallingBlock.points);
             }
 
-            // Destroy the exiting object
-            Destroy(other.gameObject);
+            
         }
+        if (other.gameObject.CompareTag("Player"))
+        {
+            // subtract like 20 points
+            // update the target of the camera follow to go to a neutral place?
+        }
+
+        // Destroy the exiting object
+        Destroy(other.gameObject);
+
     }
 }

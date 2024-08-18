@@ -21,6 +21,9 @@ public class TowerHeightTracker : MonoBehaviour
     // Reference to the currently running ResetTextSize coroutine
     private Coroutine resetTextSizeCoroutine;
 
+    // The current displayed height value
+    private float displayedHeight = 0f;
+
     void Start()
     {
         originalFontSize = heightText.fontSize;
@@ -122,12 +125,6 @@ public class TowerHeightTracker : MonoBehaviour
 
             pointsManager.HeightPoints(heightDiff);
             lastHeight = height;
-
-            // Stop any previously running ResetTextSize coroutine
-
-
-            // Start a new ResetTextSize coroutine
-            
         }
     }
 
@@ -139,12 +136,14 @@ public class TowerHeightTracker : MonoBehaviour
         heightText.color = Color.white; // Optionally reset color to white
     }
 
-    // This method updates the TextMeshProUGUI component with the current height
+    // This method updates the TextMeshProUGUI component with the current height in a lerp fashion
     void UpdateText()
     {
         if (heightText != null)
         {
-            heightText.text = height.ToString() + "m";
+            // Gradually update the displayed height value to the current height
+            displayedHeight = Mathf.Lerp(displayedHeight, height, Time.deltaTime * smoothSpeed);
+            heightText.text = Mathf.RoundToInt(displayedHeight).ToString() + "m";
         }
     }
 
